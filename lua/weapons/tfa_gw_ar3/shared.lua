@@ -3,6 +3,9 @@
 -- TFA handling the original base never had - ironsights, spread growth, recoil, range falloff.
 SWEP.Base = "tfa_gun_base"
 SWEP.Category = "TFA Generic Wasteland"
+-- groups with the Insurgency weapons, which are sorted by governing skill rather than
+-- by weapon type - one armoury, split the way the character sheet is
+SWEP.SubCategory = "Energy Weapons"
 
 SWEP.PrintName = "AR3 Standard Power-9X"
 SWEP.Author = "Annoying Rooster"
