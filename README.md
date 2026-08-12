@@ -73,3 +73,21 @@ several weapons share a `.pcf`.
 
 Nothing in the TFA addon is modified. Attachments are registered through TFA's public batch API and
 the ammo type through base GMod, so this drops in and out cleanly.
+
+## Plasma Converter
+
+`wl_plasmaconverter` converts a conventional rifle into an energy weapon. Fitted to the Insurgency
+M16A4 only so far, in its ammunition slot so it cannot coexist with a conventional ammo type.
+
+| Change | How |
+|---|---|
+| Fires a blue plasma bolt | `TracerName = "effect_t_laser_blue"`, the Terminator NPC weapons' tracer — a lua effect, so `TracerPCF` stays off |
+| Runs on Energy Charges | `Primary.Ammo` override; `GetPrimaryAmmoType()` reads it through `GetStatL`, so an attachment can change it |
+| Vents heat instead of reloading | [`lua/autorun/tfa_gw_plasmavent.lua`](lua/autorun/tfa_gw_plasmavent.lua) |
+
+Reload drops the gun out of view on `ACT_VM_HOLSTER`, hisses for two seconds, then comes back up on
+`ACT_VM_DRAW` with the magazine topped off. It hangs off `TFA_PreReload`, TFA's own cancel hook, so
+no TFA file is touched and no new animations are needed.
+
+Adding it to another weapon is one entry in that weapon's `SWEP.Attachments` — nothing in the
+attachment or the vent code is weapon-specific.
