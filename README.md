@@ -81,9 +81,16 @@ M16A4 only so far, in its ammunition slot so it cannot coexist with a convention
 
 | Change | How |
 |---|---|
-| Fires a blue plasma bolt | `TracerName = "effect_t_laser_blue"`, the Terminator NPC weapons' tracer — a lua effect, so `TracerPCF` stays off |
+| Fires a blue plasma beam | `TracerName = "Weapon_Lasermgun_Beam"` with `TracerPCF`, the same beam the 20 and 40 Watt fire |
 | Runs on Energy Charges | `Primary.Ammo` override; `GetPrimaryAmmoType()` reads it through `GetStatL`, so an attachment can change it |
+| Grows Combine hardware | `ViewModelElements` / `WorldModelElements` `active` toggles |
 | Vents heat instead of reloading | [`lua/autorun/tfa_gw_plasmavent.lua`](lua/autorun/tfa_gw_plasmavent.lua) |
+
+**On the visual side:** an attachment can only flip the `active` flag on an element the weapon
+already declares — TFA builds the element models from the weapon's own table via `GetStatRaw`, which
+the attachment cache never reaches. So the three Combine props (`plasma_emitter`, `plasma_core`,
+`plasma_monitor`) are declared inactive in the M16A4's own `VElements`/`WElements`, and this
+attachment switches them on. Fitting it to another weapon means copying those element rows across.
 
 Reload drops the gun out of view on `ACT_VM_HOLSTER`, hisses for two seconds, then comes back up on
 `ACT_VM_DRAW` with the magazine topped off. It hangs off `TFA_PreReload`, TFA's own cancel hook, so

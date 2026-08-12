@@ -32,13 +32,25 @@ TFA.Attachments.RegisterFromTable("wl_plasmaconverter", {
 			DamageTypeHandled = true
 		},
 
-		-- The blue bolt from the Terminator NPC weapons. Unlike the beams on the energy pack this
-		-- is a lua effect rather than a particle system, so TracerPCF stays off - TFA then passes
-		-- the name straight through to FireBullets as a tracer effect.
-		TracerName = "effect_t_laser_blue",
-		TracerPCF = false,
-		-- TracerCount is a 1-in-X chance and defaults to 3. A plasma rifle that only shows its bolt
-		-- on every third shot looks broken, so every shot gets one.
-		TracerCount = 1
+		-- The same continuous beam the 20 and 40 Watt fire, which is the blue one: their NPC
+		-- counterparts use effect_t_laser_blue for the identical weapon. effect_t_laser_blue itself
+		-- was the wrong pick - it is a travelling bolt, not a beam.
+		--
+		-- lasermgun_particles.pcf is loaded and precached by lua/autorun/tfa_gw_particles.lua.
+		TracerName = "Weapon_Lasermgun_Beam",
+		TracerPCF = true,
+
+		-- Combine hardware bolted on, so a converted rifle reads as field-modified rather than
+		-- factory. These only toggle elements the weapon already declares - an attachment cannot
+		-- introduce new ones, since TFA builds the element models from the weapon's own table.
+		ViewModelElements = {
+			["plasma_emitter"] = {["active"] = true},
+			["plasma_core"] = {["active"] = true},
+			["plasma_monitor"] = {["active"] = true}
+		},
+		WorldModelElements = {
+			["plasma_emitter"] = {["active"] = true},
+			["plasma_core"] = {["active"] = true}
+		}
 	}
 })
