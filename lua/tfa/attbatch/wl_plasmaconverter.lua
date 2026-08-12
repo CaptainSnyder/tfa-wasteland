@@ -53,6 +53,11 @@ TFA.Attachments.RegisterFromTable("wl_plasmaconverter", {
 		-- for the weapon's own soundscript but not for a raw .wav taken from another pack
 		FireSoundAffectedByClipSize = false,
 
+		-- no brass. There is no cartridge to eject once the gun runs on charge, and an empty string
+		-- is TFA's own documented way to suppress shells (tfa_gun_base/common/effects.lua, in
+		-- SWEP:MakeShell: "allows to disable shells by setting override to ''")
+		ShellEffectOverride = "",
+
 		-- The same continuous beam the 20 and 40 Watt fire, which is the blue one: their NPC
 		-- counterparts use effect_t_laser_blue for the identical weapon. effect_t_laser_blue itself
 		-- was the wrong pick - it is a travelling bolt, not a beam.
