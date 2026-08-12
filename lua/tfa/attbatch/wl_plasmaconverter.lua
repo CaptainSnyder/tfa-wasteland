@@ -61,9 +61,14 @@ TFA.Attachments.RegisterFromTable("wl_plasmaconverter", {
 				if (wep.IsAttached) then
 					if (wep:IsAttached("wl_beamsplitter")) then cost = cost + 2 end
 					if (wep:IsAttached("wl_beamscatter")) then cost = cost + 3 end
+					if (wep:IsAttached("wl_overchargechip")) then cost = cost + 1 end
+					if (wep:IsAttached("wl_recyclingchip")) then cost = cost - 1 end
 				end
 
-				return math.min(cost, math.max(1, wep:Clip1())), false, true
+				-- second return true ends the chain. The chips carry their own AmmoConsumption for
+				-- use on the energy weapons, where there is no converter to do this; ending here
+				-- stops those applying a second time on top of the figures counted above.
+				return math.min(math.max(1, cost), math.max(1, wep:Clip1())), true, true
 			end,
 
 			-- A plasma emitter has no recoiling mass and no gas system. What is left is the
@@ -96,11 +101,14 @@ TFA.Attachments.RegisterFromTable("wl_plasmaconverter", {
 		-- introduce new ones, since TFA builds the element models from the weapon's own table.
 		ViewModelElements = {
 			["plasma_cell"] = {["active"] = true},
-			["plasma_cell2"] = {["active"] = true}
+			["plasma_cell2"] = {["active"] = true},
+			["plasma_monitor"] = {["active"] = true},
+			["plasma_readout"] = {["active"] = true}
 		},
 		WorldModelElements = {
 			["plasma_cell"] = {["active"] = true},
-			["plasma_cell2"] = {["active"] = true}
+			["plasma_cell2"] = {["active"] = true},
+			["plasma_monitor"] = {["active"] = true}
 		},
 
 		-- Collapse the real magazine rather than hiding it behind the cell. There is no magazine
