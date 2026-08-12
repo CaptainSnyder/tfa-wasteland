@@ -29,8 +29,29 @@ TFA.Attachments.RegisterFromTable("wl_plasmaconverter", {
 			DamageType = DMG_PLASMA,
 			-- stops TFA autodetecting a damage type from the ammo name, which it cannot do for a
 			-- custom type it has never seen
-			DamageTypeHandled = true
+			DamageTypeHandled = true,
+
+			-- the 40 Watt's report, the most-used sound across the energy pack. A converted rifle
+			-- has no cartridge to go off, so the host weapon's gunshot has to go with it.
+			Sound = "weapons/40watt/plasma.wav",
+
+			-- a cell holds far more than a magazine of brass. Matches the energy pack, where every
+			-- weapon carries 100 charges.
+			ClipSize = 100,
+
+			-- the 20 Watt is the baseline energy weapon, and a converted rifle is held to its
+			-- output rather than the host's. Whatever the gun hit for as a firearm is irrelevant
+			-- once it is throwing plasma.
+			Damage = 5,
+
+			-- but three charges a shot against the 20 Watt's one. A bolted-on converter is a field
+			-- expedient, not a purpose-built emitter, and it pays for that in efficiency.
+			AmmoConsumption = 3
 		},
+
+		-- TFA otherwise looks for low-ammo and last-shot variants of the firing sound, which exist
+		-- for the weapon's own soundscript but not for a raw .wav taken from another pack
+		FireSoundAffectedByClipSize = false,
 
 		-- The same continuous beam the 20 and 40 Watt fire, which is the blue one: their NPC
 		-- counterparts use effect_t_laser_blue for the identical weapon. effect_t_laser_blue itself
