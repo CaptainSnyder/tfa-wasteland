@@ -44,9 +44,34 @@ TFA.Attachments.RegisterFromTable("wl_plasmaconverter", {
 			-- once it is throwing plasma.
 			Damage = 5,
 
-			-- but three charges a shot against the 20 Watt's one. A bolted-on converter is a field
+			-- Three charges a shot against the 20 Watt's one - a bolted-on converter is a field
 			-- expedient, not a purpose-built emitter, and it pays for that in efficiency.
-			AmmoConsumption = 3
+			--
+			-- This one function owns the whole cost, including the beam splitters' surcharges,
+			-- rather than letting them each add their own. TFA chains stat functions in pairs()
+			-- order, so "+2 charges" and "clamp to what is left" could apply in either order, and
+			-- clamping first then adding would defeat the clamp.
+			--
+			-- The clamp is the forgiving bit: a shot never costs more than the cell has left, so a
+			-- gun with anything at all in it fires at full power. Third return value disables stat
+			-- caching, since this depends on Clip1() and would otherwise go stale immediately.
+			AmmoConsumption = function(wep, stat)
+				local cost = 3
+
+				if (wep.IsAttached) then
+					if (wep:IsAttached("wl_beamsplitter")) then cost = cost + 2 end
+					if (wep:IsAttached("wl_beamscatter")) then cost = cost + 3 end
+				end
+
+				return math.min(cost, math.max(1, wep:Clip1())), false, true
+			end,
+
+			-- A plasma emitter has no recoiling mass and no gas system. What is left is the
+			-- shooter flinching, so a little rather than none.
+			KickUp = function(wep, stat) return stat * 0.15 end,
+			KickDown = function(wep, stat) return stat * 0.15 end,
+			KickHorizontal = function(wep, stat) return stat * 0.15 end,
+			StaticRecoilFactor = function(wep, stat) return stat * 0.2 end
 		},
 
 		-- TFA otherwise looks for low-ammo and last-shot variants of the firing sound, which exist
