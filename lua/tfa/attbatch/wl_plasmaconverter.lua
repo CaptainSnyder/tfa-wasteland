@@ -44,10 +44,27 @@ TFA.Attachments.RegisterFromTable("wl_plasmaconverter", {
 		-- brass. This only toggles an element the weapon already declares - an attachment cannot
 		-- introduce new ones, since TFA builds the element models from the weapon's own table.
 		ViewModelElements = {
-			["plasma_cell"] = {["active"] = true}
+			["plasma_cell"] = {["active"] = true},
+			["plasma_cell2"] = {["active"] = true}
 		},
 		WorldModelElements = {
-			["plasma_cell"] = {["active"] = true}
+			["plasma_cell"] = {["active"] = true},
+			["plasma_cell2"] = {["active"] = true}
+		},
+
+		-- Collapse the real magazine rather than hiding it behind the cell. There is no magazine
+		-- bodygroup on this viewmodel, but there is a Magazine bone, and ViewModelBoneMods resolves
+		-- through GetStatL - so an attachment can shrink it to nothing. Scaling to a hair above
+		-- zero instead of exactly zero, since a zeroed bone matrix is not always well behaved.
+		--
+		-- The cell is parented to this same bone. If the scale turns out to propagate to attached
+		-- elements the cell will disappear with the magazine, and the fix is to re-parent it to
+		-- Magazine_Release, which sits on the receiver.
+		ViewModelBoneMods = {
+			["Magazine"] = {scale = Vector(0.001, 0.001, 0.001), pos = Vector(0, 0, 0), angle = Angle(0, 0, 0)}
+		},
+		WorldModelBoneMods = {
+			["W_MAGAZINE"] = {scale = Vector(0.001, 0.001, 0.001), pos = Vector(0, 0, 0), angle = Angle(0, 0, 0)}
 		}
 	}
 })
