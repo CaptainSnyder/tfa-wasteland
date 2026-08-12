@@ -40,17 +40,14 @@ TFA.Attachments.RegisterFromTable("wl_plasmaconverter", {
 		TracerName = "Weapon_Lasermgun_Beam",
 		TracerPCF = true,
 
-		-- Combine hardware bolted on, so a converted rifle reads as field-modified rather than
-		-- factory. These only toggle elements the weapon already declares - an attachment cannot
+		-- A cell sat in the magazine well, so the rifle reads as feeding on charge rather than
+		-- brass. This only toggles an element the weapon already declares - an attachment cannot
 		-- introduce new ones, since TFA builds the element models from the weapon's own table.
 		ViewModelElements = {
-			["plasma_emitter"] = {["active"] = true},
-			["plasma_core"] = {["active"] = true},
-			["plasma_monitor"] = {["active"] = true}
+			["plasma_cell"] = {["active"] = true}
 		},
 		WorldModelElements = {
-			["plasma_emitter"] = {["active"] = true},
-			["plasma_core"] = {["active"] = true}
+			["plasma_cell"] = {["active"] = true}
 		}
 	}
 })
